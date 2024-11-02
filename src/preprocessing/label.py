@@ -1,4 +1,3 @@
-import pandas as pd
 import re
 
 def classify_with_reasoning(text):
@@ -36,13 +35,3 @@ def classify_with_reasoning(text):
     else:
         # Default 
         return "IT service"
-
-app_gallery_df = pd.read_csv('data/preprocessed_appgallery_data.csv')
-purchasing_df = pd.read_csv('data/preprocessed_purchasing_data.csv')
-
-# Apply classification
-app_gallery_df['label'] = app_gallery_df['Interaction content'].apply(classify_with_reasoning)
-purchasing_df['label'] = purchasing_df['Interaction content'].apply(classify_with_reasoning)
-
-app_gallery_df.to_csv('data/AppGallery_labelled.csv', index=False)
-purchasing_df.to_csv('data/Purchasing_labelled.csv', index=False)

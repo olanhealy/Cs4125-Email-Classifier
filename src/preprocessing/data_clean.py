@@ -1,28 +1,28 @@
 import pandas as pd
 import re
-from translate import translate_to_english
+from src.preprocessing.translate import translate_to_english
 
 # Clean text
 def clean_text(text):
     if not isinstance(text, str):
-        return ''  # Return an empty string if the input is not a string
+        # Return an empty string if the input is not a string
+        return ''  
     
-    # Clean the text using regex substitutions
-    # TODO: Discuss with the team what will need to be substituted
+    # Clean the text
+    #TODO: Discuss with team if we need to remove more phrases
     text = re.sub(r'\bSent from my .*\b', '', text)
     text = re.sub(r'\bCustomer Support.*', '', text)
     return text
 
 # Function to preprocess a DataFrame
 def preprocess_data(df, output_filename):
-    # Select relevant columns
-    # TODO: Discuss with the team what columns are relevant
     selected_columns = ['Ticket id', 'Interaction id', 'Ticket Summary', 'Interaction content', 'Type 1', 'Type 2', 'Type 3', 'Type 4']
-    df_selected = df[selected_columns]
+    # This copy was created to avoid SettingWithCopyWarning
+    df_selected = df[selected_columns].copy() 
 
-    # Translate and then clean text data
-    df_selected['Interaction content'] = df_selected['Interaction content'].apply(translate_to_english)
-    df_selected['Interaction content'] = df_selected['Interaction content'].apply(clean_text)
+    # Translate and clean text data
+    df_selected.loc[:, 'Interaction content'] = df_selected['Interaction content'].apply(translate_to_english)
+    df_selected.loc[:, 'Interaction content'] = df_selected['Interaction content'].apply(clean_text)
     df_selected.fillna('Unknown', inplace=True)
     grouped_data = df_selected.groupby('Type 1').size().reset_index(name='Count')
 
@@ -31,11 +31,3 @@ def preprocess_data(df, output_filename):
     print(f"Data cleaning and output completed for {output_filename}")
 
     return df_selected, grouped_data
-
-# Load and preprocess the AppGallery file
-df_appgallery = pd.read_csv('data/AppGallery.csv')
-cleaned_appgallery, grouped_appgallery = preprocess_data(df_appgallery, 'data/preprocessed_appgallery_data.csv')
-
-# Load and preprocess the Purchasing file
-df_purchasing = pd.read_csv('data/Purchasing.csv')
-cleaned_purchasing, grouped_purchasing = preprocess_data(df_purchasing, 'data/preprocessed_purchasing_data.csv')
