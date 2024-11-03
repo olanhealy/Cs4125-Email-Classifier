@@ -1,4 +1,4 @@
-numpy==<latest_version>
-pandas==<latest_version>
-scikit-learn==<latest_version>
-xgboost==<latest_version>
+numpy
+pandas
+scikit-learn
+xgboost
