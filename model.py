@@ -1,5 +1,3 @@
-#THIS IS AN EXAMPLE OF A MODEL FILE. YOU CAN USE THIS AS A TEMPLATE ON HOW TO CALL THE PREPROCESSING FUNCTIONS AND TRAIN A MODEL ON THE PROCESSED DATA.
-
 from src.preprocessing.preprocess import get_processed_data
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import ExtraTreesClassifier
