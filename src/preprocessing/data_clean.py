@@ -1,6 +1,7 @@
 import pandas as pd
 import re
 from src.preprocessing.translate import translate_to_english
+from src.preprocessing.translate import report_translation_rate
 
 # Clean text
 def clean_text(text):
@@ -22,6 +23,7 @@ def preprocess_data(df, output_filename):
 
     # Translate and clean text data
     df_selected.loc[:, 'Interaction content'] = df_selected['Interaction content'].apply(translate_to_english)
+    report_translation_rate()
     df_selected.loc[:, 'Interaction content'] = df_selected['Interaction content'].apply(clean_text)
     df_selected.fillna('Unknown', inplace=True)
     grouped_data = df_selected.groupby('Type 1').size().reset_index(name='Count')
