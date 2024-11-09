@@ -1,10 +1,6 @@
 #src/decorators/logging_decorator.py
-import logging
 from src.decorators.base_decorator import BaseDecorator
 from src.models.base import BaseModel
-
-# Configure logging to print to console
-logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
 class LoggingDecorator(BaseDecorator):
     """
@@ -25,9 +21,10 @@ class LoggingDecorator(BaseDecorator):
             Log the start and completion of the training process.
             This method calls the train() method of the wrapped model and logs messages before and after the call.
         """
-        logging.info(f"Starting training for {self.base_model.__class__.__name__}")
+        model_name = self.get_wrapped_model().__class__.__name__
+        self.logger.info(f"Starting training for {model_name}")
         super().train()
-        logging.info(f"Training completed for {self.base_model.__class__.__name__}")
+        self.logger.info(f"Training completed for {model_name}")
 
     def predict(self) -> int:
         """
@@ -36,7 +33,8 @@ class LoggingDecorator(BaseDecorator):
 
             :return: The prediction result from the wrapped model.
         """
-        logging.info(f"Starting prediction for {self.base_model.__class__.__name__}")
+        model_name = self.get_wrapped_model().__class__.__name__
+        self.logger.info(f"Starting prediction for {model_name}")
         result = super().predict()
-        logging.info(f"Prediction result: {result}")
+        self.logger.info(f"Prediction result: {result}")
         return result

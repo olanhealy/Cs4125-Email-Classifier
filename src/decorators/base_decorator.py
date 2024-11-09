@@ -1,4 +1,5 @@
 #src/decorators/base_decorator.py
+import logging
 from abc import ABC
 from src.models.base import BaseModel
 
@@ -17,6 +18,16 @@ class BaseDecorator(BaseModel, ABC):
         """
         super().__init__()
         self.base_model = base_model
+
+        # Set up a dedicated logger for each decorator
+        self.logger = logging.getLogger(f"{self.__class__.__name__}-{self.base_model.__class__.__name__}")
+        self.logger.setLevel(logging.INFO)
+
+        # Add a StreamHandler if not already added
+        if not self.logger.hasHandlers():
+            handler = logging.StreamHandler()
+            handler.setFormatter(logging.Formatter('%(levelname)s - %(message)s'))
+            self.logger.addHandler(handler)
 
     def train(self) -> None:
         """
@@ -37,3 +48,12 @@ class BaseDecorator(BaseModel, ABC):
             This method calls the data_transform() method of the wrapped model.
         """
         return self.base_model.data_transform()
+
+    def get_wrapped_model(self):
+        """
+        Recursively gets the original underlying model.
+        This ensures we always get the actual model's name, not the decorator's name when logging.
+        """
+        if isinstance(self.base_model, BaseDecorator):
+            return self.base_model.get_wrapped_model()
+        return self.base_model

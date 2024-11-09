@@ -1,11 +1,7 @@
 #src/decorators/timing_decorator.py
 import time
-import logging
 from src.decorators.base_decorator import BaseDecorator
 from src.models.base import BaseModel
-
-# Configure logging to print to console
-logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
 class TimingDecorator(BaseDecorator):
     """
@@ -30,7 +26,7 @@ class TimingDecorator(BaseDecorator):
         super().train()
         end_time = time.time()
         elapsed_time = end_time - start_time
-        logging.info(f"Training took {elapsed_time:.4f} seconds")
+        self.logger.info(f"Training took {elapsed_time:.4f} seconds")
 
     def predict(self) -> int:
         """
@@ -43,5 +39,5 @@ class TimingDecorator(BaseDecorator):
         result = super().predict()
         end_time = time.time()
         elapsed_time = end_time - start_time
-        logging.info(f"Prediction took {elapsed_time:.4f} seconds")
+        self.logger.info(f"Prediction took {elapsed_time:.4f} seconds")
         return result
