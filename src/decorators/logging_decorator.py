@@ -1,34 +1,42 @@
 #src/decorators/logging_decorator.py
 import logging
+from src.decorators.base_decorator import BaseDecorator
 from src.models.base import BaseModel
 
-class LoggingDecorator(BaseModel):
-    def __init__(self, model):
+# Configure logging to print to console
+logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
+
+class LoggingDecorator(BaseDecorator):
+    """
+    A decorator class that adds logging functionality to any model implementing the BaseModel interface.
+    This decorator logs when training starts and completes, as well as when predictions are made.
+    """
+
+    def __init__(self, base_model: BaseModel):
         """
-            Initialize the LoggingDecorator with a model to wrap.
+            Initialise the LoggingDecorator with a model to wrap.
 
-            :param model: An instance of a classifier implementing BaseModel interface.
+            :param base_model: An instance of a classifier implementing BaseModel interface.
         """
-        self.model = model
+        super().__init__(base_model)
 
-    def train(self, data):
-        logging.info("Starting training...")
-        result = self._model.train(data)
-        logging.info("Training completed.")
-        return result
+    def train(self) -> None:
+        """
+            Log the start and completion of the training process.
+            This method calls the train() method of the wrapped model and logs messages before and after the call.
+        """
+        logging.info(f"Starting training for {self.base_model.__class__.__name__}")
+        super().train()
+        logging.info(f"Training completed for {self.base_model.__class__.__name__}")
 
-    def predict(self, data):
-        logging.info("Starting prediction...")
-        result = self._model.predict(data)
+    def predict(self) -> int:
+        """
+            Log the start of the prediction process and the prediction results.
+            This method calls the predict() method of the wrapped model and logs messages before and after the call.
+
+            :return: The prediction result from the wrapped model.
+        """
+        logging.info(f"Starting prediction for {self.base_model.__class__.__name__}")
+        result = super().predict()
         logging.info(f"Prediction result: {result}")
         return result
-
-    def data_transform(self, data):
-        """
-        Pass-through for data transformation.
-        """
-        logging.info("Starting data transformation...")
-        result = self._model.data_transform(data)
-        logging.info("Data transformation completed.")
-        return result
-
