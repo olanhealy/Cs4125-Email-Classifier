@@ -3,7 +3,6 @@ from src.decorators.decorator import ClassifierDecorator
 import hashlib
 import pickle
 
-
 class CachingDecorator(ClassifierDecorator):
     """
         A decorator to cache the predictions of the model.
@@ -11,18 +10,26 @@ class CachingDecorator(ClassifierDecorator):
     """
     def __init__(self, strategy):
         """
-            Initialize the caching decorator with an empty cache.
+            Initialise the caching decorator with an empty cache.
         """
         super().__init__(strategy)
         self.cache = {}
 
-    def _hash_input(self, data):
+    def _hash_input(self, model, data):
         """
-        Create a unique hash for the input data to use as the cache key.
+        Create a unique hash for the input data and model to use as the cache key.
 
         :returns: A hash string representing the input data.
         """
-        return hashlib.md5(pickle.dumps(data)).hexdigest()
+        # Create a unique identifier based on the model's class name
+        # Create a unique identifier based on the model's class name and its memory address
+        model_identifier = f"{model.__class__.__name__}_{id(model)}"
+
+        # Create a hash of the input data
+        data_hash = hashlib.md5(pickle.dumps(data)).hexdigest()
+
+        # Combine model identifier and data hash to form the final cache key
+        return f"{model_identifier}_{data_hash}"
 
     def train(self, X_train, y_train):
         """"
@@ -36,7 +43,7 @@ class CachingDecorator(ClassifierDecorator):
             Cache the predictions based on the hashed input data.
         """
         # Generate a hash of the input data
-        data_hash = self._hash_input(X_test)
+        data_hash = self._hash_input(self._strategy, X_test)
 
         # Check if result is already cached
         if data_hash in self.cache:
