@@ -20,9 +20,9 @@ class LoggingDecorator(ClassifierDecorator):
             :return: The training result from the wrapped strategy.
         """
         model_name = self._strategy.__class__.__name__
-        print(f"Starting training for {model_name}")
+        print(f"[LOG] Starting training for {model_name}")
         result = super().train(X_train, y_train)
-        print(f"Training completed for {model_name}")
+        print(f"[LOG] Training completed for {model_name}")
         return result
 
     def predict(self, X_test) -> int:
@@ -32,15 +32,15 @@ class LoggingDecorator(ClassifierDecorator):
             :return: The prediction result from the wrapped strategy.
         """
         model_name = self._strategy.__class__.__name__
-        print(f"Starting prediction for {model_name}")
+        print(f"[LOG] Starting prediction for {model_name}")
         predictions = super().predict(X_test)
-        print(f"Prediction result: {predictions}")
+        print(f"[LOG] Prediction result: {predictions}")
         return predictions
 
     def print_results(self, y_test, predictions):
         """
             Log the start and end of the result printing process.
         """
-        print("Printing results...")
+        print("[LOG] Printing results...")
         super().print_results(y_test, predictions)
-        print("Results printed.")
+        print("[LOG] Results printed.")
