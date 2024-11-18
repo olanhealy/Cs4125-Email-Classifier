@@ -1,36 +1,57 @@
-#src/decorators/caching_decorator.py
-from src.decorators.base_decorator import BaseDecorator
-from src.models.base import BaseModel
-import numpy as np
+# File: src/decorators/caching_decorator.py
+from src.decorators.decorator import ClassifierDecorator
+import hashlib
+import pickle
 
 
-class CachingDecorator(BaseDecorator):
+class CachingDecorator(ClassifierDecorator):
     """
-    A decorator class that caches the results of predictions for faster repeated predictions.
+        A decorator to cache the predictions of the model.
+        Avoids recomputing predictions for the same input data.
     """
-
-    def __init__(self, base_model: BaseModel):
-        super().__init__(base_model)
-
-    def predict(self, X=None) -> int:
+    def __init__(self, strategy):
         """
-        Override the predict method to add caching functionality.
-        Note: We use a workaround to keep the existing `predict()` method signature.
+            Initialize the caching decorator with an empty cache.
         """
-        if X is None:
-            return super().predict()  # Use the existing predict method if no input is provided
+        super().__init__(strategy)
+        self.cache = {}
 
-        # Convert X to a hashable key
-        cache_key = X.tobytes() if isinstance(X, np.ndarray) else str(X)
+    def _hash_input(self, data):
+        """
+        Create a unique hash for the input data to use as the cache key.
 
-        # Check if the result is already cached
-        if cache_key in self.cache:
-            self.logger.info("Cache hit for input")
-            return self.cache[cache_key]
+        :returns: A hash string representing the input data.
+        """
+        return hashlib.md5(pickle.dumps(data)).hexdigest()
 
-        # Cache miss: call the original predict and store the result
-        self.logger.info("Cache miss for input. Computing prediction.")
-        self.base_model.X_test = X  # Set the test data on the model
-        result = super().predict()
-        self.cache[cache_key] = result
-        return result
+    def train(self, X_train, y_train):
+        """"
+            Training process without caching
+        """
+        print("[DEBUG] Training with CachingDecorator...")
+        return super().train(X_train, y_train)
+
+    def predict(self, X_test):
+        """
+            Cache the predictions based on the hashed input data.
+        """
+        # Generate a hash of the input data
+        data_hash = self._hash_input(X_test)
+
+        # Check if result is already cached
+        if data_hash in self.cache:
+            print("[CACHE] Returning cached prediction.")
+            return self.cache[data_hash]
+
+        # If not cached, perform the prediction and cache it
+        print("[CACHE] Caching new prediction...")
+        predictions = super().predict(X_test)
+        self.cache[data_hash] = predictions
+        return predictions
+
+    def print_results(self, y_test, predictions):
+        """"
+        Printing results without caching
+        """
+        print("[DEBUG] Printing results with CachingDecorator...")
+        return super().print_results(y_test, predictions)

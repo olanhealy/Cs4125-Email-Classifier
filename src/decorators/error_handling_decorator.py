@@ -1,43 +1,52 @@
 #src/decorators/error_handling_decorator.py
-from src.decorators.base_decorator import BaseDecorator
-from src.models.base import BaseModel
+from src.decorators.decorator import ClassifierDecorator
 
-class ErrorHandlingDecorator(BaseDecorator):
+class ErrorHandlingDecorator(ClassifierDecorator):
     """
-    A decorator class that adds error handling functionality to any model implementing the BaseModel interface.
-    This decorator logs any exceptions that occur during training and prediction.
+    A decorator class that adds error handling functionality.
+    This decorator logs any exceptions that occur during training, prediction and printing results.
     """
 
-    def __init__(self, base_model: BaseModel):
-        """
-        Initialize the ErrorHandlingDecorator with the model to be wrapped.
-
-        :param base_model: An instance of a classifier implementing the BaseModel interface.
-        """
-        super().__init__(base_model)
-
-    def train(self) -> None:
+    def train(self, X_train, y_train) -> None:
         """
         Wrap the train() method to catch and log any exceptions that occur.
         If an exception occurs, it logs the error but re-raises it.
+
+        :return: The training result from the wrapped strategy, or -1 if an error occurs.
         """
         try:
-            super().train()
+            print("[DEBUG] Training with ErrorHandlingDecorator...")
+            return super().train(X_train, y_train)
         except Exception as e:
             model_name = self.get_wrapped_model().__class__.__name__
-            self.logger.error(f"Error during training for {model_name}: {e}")
-            raise  # Re-raise the exception to let other decorators handle it
+            print(f"[ERROR] An error occurred during training for {model_name}: {e}")
+            raise
 
-    def predict(self) -> int:
+    def predict(self, X_test) -> int:
         """
         Wrap the predict() method to catch and log any exceptions that occur.
         If an exception occurs, it logs the error but re-raises it.
 
-        :return: The prediction result from the wrapped model, or -1 if an error occurs.
+        :return: The prediction result from the wrapped strategy, or -1 if an error occurs.
         """
         try:
-            return super().predict()
+            print("[DEBUG] Predicting with ErrorHandlingDecorator...")
+            return super().predict(X_test)
         except Exception as e:
             model_name = self.get_wrapped_model().__class__.__name__
-            self.logger.error(f"Error during prediction for {model_name}: {e}")
-            raise  # Re-raise the exception to let other decorators handle it
+            print(f"[ERROR] An error occurred during prediction for {model_name}: {e}")
+            raise
+
+    def print_results(self, y_test, predictions):
+        """
+            Wrap the print_results() method to catch and log any exceptions that occur.
+            If an exception occurs, it logs the error but re-raises it.
+
+            :return: The printed results from the wrapped strategy, or -1 if an error occurs.
+        """
+        try:
+            print("[DEBUG] Printing results with ErrorHandlingDecorator...")
+            return super().print_results(y_test, predictions)
+        except Exception as e:
+            print(f"[ERROR] An error occurred while printing results: {e}")
+            raise
