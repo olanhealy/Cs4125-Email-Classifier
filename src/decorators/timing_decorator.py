@@ -8,6 +8,12 @@ class TimingDecorator(ClassifierDecorator):
         This decorator logs the time taken for training, prediction and printing results..
     """
 
+    def __init__(self, strategy):
+        """
+        Initialise the timing decorator.
+        """
+        super().__init__(strategy)
+
     def train(self, X_train, y_train) -> None:
         """
             Measure and log the time taken to train the model.

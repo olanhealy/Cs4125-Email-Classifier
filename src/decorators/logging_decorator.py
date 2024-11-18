@@ -7,13 +7,19 @@ class LoggingDecorator(ClassifierDecorator):
     This decorator logs during training, prediction and printing results.
     """
 
+    def __init__(self, strategy):
+        """
+        Initialise the logging decorator.
+        """
+        super().__init__(strategy)
+
     def train(self, X_train, y_train) -> None:
         """
             Log the start and completion of the training process.
 
             :return: The training result from the wrapped strategy.
         """
-        model_name = self.get_wrapped_model().__class__.__name__
+        model_name = self._strategy.__class__.__name__
         print(f"Starting training for {model_name}")
         result = super().train(X_train, y_train)
         print(f"Training completed for {model_name}")
@@ -25,7 +31,7 @@ class LoggingDecorator(ClassifierDecorator):
 
             :return: The prediction result from the wrapped strategy.
         """
-        model_name = self.get_wrapped_model().__class__.__name__
+        model_name = self._strategy.__class__.__name__
         print(f"Starting prediction for {model_name}")
         predictions = super().predict(X_test)
         print(f"Prediction result: {predictions}")

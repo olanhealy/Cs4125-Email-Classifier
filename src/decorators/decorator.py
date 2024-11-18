@@ -10,7 +10,7 @@ class ClassifierDecorator(ClassificationStrategy, ABC):
 
     def __init__(self, strategy: ClassificationStrategy):
         """
-            Initialize the decorator with a strategy instance.
+            Initialise the decorator with a strategy instance.
 
             :param strategy: An instance of a class implementing the ClassificationStrategy interface.
         """
@@ -37,12 +37,3 @@ class ClassifierDecorator(ClassificationStrategy, ABC):
             :return: The printed result from the wrapped strategy.
         """
         return self._strategy.print_results(y_test, predictions)
-
-    def get_wrapped_model(self):
-        """
-        Recursively gets the original underlying model.
-        This ensures we always get the actual model's name, not the decorator's name when logging.
-        """
-        if isinstance(self._strategy, ClassifierDecorator):
-            return self._strategy.get_wrapped_model()
-        return self._strategy

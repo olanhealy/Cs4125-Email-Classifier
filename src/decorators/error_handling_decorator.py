@@ -7,6 +7,12 @@ class ErrorHandlingDecorator(ClassifierDecorator):
     This decorator logs any exceptions that occur during training, prediction and printing results.
     """
 
+    def __init__(self, strategy):
+        """
+        Initialise the error catching decorator.
+        """
+        super().__init__(strategy)
+
     def train(self, X_train, y_train) -> None:
         """
         Wrap the train() method to catch and log any exceptions that occur.
@@ -18,7 +24,7 @@ class ErrorHandlingDecorator(ClassifierDecorator):
             print("[DEBUG] Training with ErrorHandlingDecorator...")
             return super().train(X_train, y_train)
         except Exception as e:
-            model_name = self.get_wrapped_model().__class__.__name__
+            model_name = self._strategy.__class__.__name__
             print(f"[ERROR] An error occurred during training for {model_name}: {e}")
             raise
 
@@ -33,7 +39,7 @@ class ErrorHandlingDecorator(ClassifierDecorator):
             print("[DEBUG] Predicting with ErrorHandlingDecorator...")
             return super().predict(X_test)
         except Exception as e:
-            model_name = self.get_wrapped_model().__class__.__name__
+            model_name = self._strategy.__class__.__name__
             print(f"[ERROR] An error occurred during prediction for {model_name}: {e}")
             raise
 
