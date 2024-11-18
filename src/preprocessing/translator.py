@@ -1,5 +1,6 @@
 from googletrans import Translator
 
+# Initialize the translator globally
 translator = Translator()
 total_count = 0
 failure_count = 0
@@ -7,7 +8,6 @@ failure_count = 0
 def translate_to_english(text):
     """Translate the given text to English."""
     global total_count, failure_count
-    
     total_count += 1
 
     if not isinstance(text, str) or text.strip() == '':
@@ -17,7 +17,7 @@ def translate_to_english(text):
     try:
         translated = translator.translate(text, dest='en')
         return translated.text
-    except Exception as e:
+    except Exception:
         failure_count += 1
         return text
 
