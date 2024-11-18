@@ -12,7 +12,6 @@ def preprocess_data_with_splits(df, output_filename, test_size=0.2, random_state
                         'Interaction content', 'Type 1', 'Type 2', 'Type 3', 'Type 4']
     df_selected = df[selected_columns].copy()
 
-    # Clean and translate the 'Interaction content'
     df_selected['Interaction content'] = df_selected['Interaction content'].apply(clean_text)
     df_selected['Interaction content'] = df_selected['Interaction content'].apply(translate_to_english)
     report_translation_rate()
@@ -25,11 +24,9 @@ def preprocess_data_with_splits(df, output_filename, test_size=0.2, random_state
         lambda x: ' > '.join(x), axis=1
     )
 
-    # Save the processed data to a CSV file
     df_selected.to_csv(output_filename, index=False)
     print(f"Data cleaning and output completed for {output_filename}")
 
-    # Prepare features and labels
     X = df_selected['Interaction content']
     y = df_selected['hierarchical_label']
 
