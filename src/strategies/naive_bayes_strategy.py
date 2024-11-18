@@ -1,10 +1,9 @@
-from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import classification_report
 from strategies.classification_strategy import ClassificationStrategy
 
 class NaiveBayesStrategy(ClassificationStrategy):
-    def __init__(self, alpha=1.0):
-        self.model = MultinomialNB(alpha=alpha)
+    def __init__(self, model):
+        super().__init__(model)
 
     def train(self, X_train, y_train):
         self.model.fit(X_train, y_train)
