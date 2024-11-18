@@ -1,5 +1,5 @@
 import pandas as pd
-from preprocessing.preprocessor import preprocess_data_with_types
+from src.preprocessing.preprocessor import preprocess_data_with_types
 
 df = pd.read_csv('data/AppGallery.csv')
 
