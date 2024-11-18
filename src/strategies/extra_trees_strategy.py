@@ -1,10 +1,9 @@
-from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.metrics import classification_report
 from strategies.classification_strategy import ClassificationStrategy
 
 class ExtraTreesStrategy(ClassificationStrategy):
-    def __init__(self, n_estimators=1000, random_state=0, class_weight='balanced'):
-        self.model = ExtraTreesClassifier(n_estimators=n_estimators, random_state=random_state, class_weight=class_weight)
+    def __init__(self, model):
+        super().__init__(model)
 
     def train(self, X_train, y_train):
         self.model.fit(X_train, y_train)
