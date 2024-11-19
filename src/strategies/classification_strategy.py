@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 
 class ClassificationStrategy(ABC):
+    def __init__(self, model):
+        self.model = model
+
     @abstractmethod
     def train(self, X_train, y_train):
         pass

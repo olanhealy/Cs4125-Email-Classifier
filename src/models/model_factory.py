@@ -1,8 +1,8 @@
-from models.gradient_boosting import GradientBoostingModel
-from models.naive_bayes import NaiveBayesModel
-from models.xg_boost import XGBoostModel
-from models.svm import SVMModel
-from models.extra_trees import ExtraTreesModel
+from src.models.gradient_boosting import GradientBoostingModel
+from src.models.naive_bayes import NaiveBayesModel
+from src.models.xg_boost import XGBoostModel
+from src.models.svm import SVMModel
+from src.models.extra_trees import ExtraTreesModel
 from ..utils.config import Configuration
 
 class ClassifierFactory:

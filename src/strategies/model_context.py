@@ -1,11 +1,9 @@
-from strategies.classification_strategy import ClassificationStrategy
-
+from src.strategies.classification_strategy import ClassificationStrategy
 from src.decorators.caching_decorator import CachingDecorator
 from src.decorators.error_handling_decorator import ErrorHandlingDecorator
 from src.decorators.logging_decorator import LoggingDecorator
 from src.decorators.result_formatting_decorator import ResultFormattingDecorator
 from src.decorators.timing_decorator import TimingDecorator
-
 
 class ModelContext:
     def __init__(self, strategy: ClassificationStrategy,
