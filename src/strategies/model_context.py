@@ -1,4 +1,4 @@
-from strategies.classification_strategy import ClassificationStrategy
+from src.strategies.classification_strategy import ClassificationStrategy
 class ModelContext:
     def __init__(self, strategy: ClassificationStrategy):
         self.strategy = strategy

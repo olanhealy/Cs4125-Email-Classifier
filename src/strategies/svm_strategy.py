@@ -1,5 +1,5 @@
 from sklearn.metrics import classification_report
-from strategies.classification_strategy import ClassificationStrategy
+from src.strategies.classification_strategy import ClassificationStrategy
 
 class SVMStrategy(ClassificationStrategy):
     def __init__(self, model):
