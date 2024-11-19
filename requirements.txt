@@ -2,3 +2,5 @@ numpy
 pandas
 scikit-learn
 xgboost
+tabulate
+googletrans==4.0.0-rc1

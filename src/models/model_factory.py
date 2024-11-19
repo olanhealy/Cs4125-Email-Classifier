@@ -3,7 +3,7 @@ from src.models.naive_bayes import NaiveBayesModel
 from src.models.xg_boost import XGBoostModel
 from src.models.svm import SVMModel
 from src.models.extra_trees import ExtraTreesModel
-from ..utils.config import Configuration
+from src.utils.config import Configuration
 
 class ClassifierFactory:
     """
