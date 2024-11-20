@@ -2,6 +2,10 @@ from sklearn.metrics import classification_report
 from src.strategies.classification_strategy import ClassificationStrategy
 
 class ExtraTreesStrategy(ClassificationStrategy):
+    """
+    Concrete strategy for using the Extra Trees Classifier.
+    Encapsulates the training, prediction, and result evaluation for Extra Trees.
+    """
     def __init__(self, model):
         super().__init__(model)
 
