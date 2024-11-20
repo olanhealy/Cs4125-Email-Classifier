@@ -41,6 +41,6 @@ class LoggingDecorator(ClassifierDecorator):
         """
             Log the start and end of the result printing process.
         """
-        print("[LOG] Printing results...")
+        print(f"\n[LOG] Printing results...")
         super().print_results(y_test, predictions)
-        print("[LOG] Results printed.")
+        print(f"\n[LOG] Results printed.")

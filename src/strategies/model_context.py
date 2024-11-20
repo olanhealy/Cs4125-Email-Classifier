@@ -27,15 +27,16 @@ class ModelContext:
         :param format_type: Desired format for results (e.g., text, JSON, table).
         """
 
-        
+        # Apply the decorators based on the provided flags
+        if use_formatting:
+            strategy = ResultFormattingDecorator(strategy, format_type=format_type)
         if use_logging:
             strategy = LoggingDecorator(strategy)
         if use_timing:
             strategy = TimingDecorator(strategy)
         if use_error_handling:
             strategy = ErrorHandlingDecorator(strategy)
-        if use_formatting:
-            strategy = ResultFormattingDecorator(strategy, format_type=format_type)
+
         self.strategy = strategy
 
     def train(self, X_train, y_train):
@@ -55,5 +56,5 @@ class ModelContext:
     def print_results(self, y_test, predictions):
         """
         Print the classification results using the selected strategy.
-        """       
+        """
         self.strategy.print_results(y_test, predictions)
