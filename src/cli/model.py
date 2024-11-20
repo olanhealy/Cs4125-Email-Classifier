@@ -13,7 +13,7 @@ from src.strategies.svm_strategy import SVMStrategy
 from src.strategies.xgboost_strategy import XGBoostStrategy
 from src.strategies.model_context import ModelContext
 
-def run_model_with_strategy(dataset, model_name):
+def run_model_with_strategy(dataset, model_name, result_format):
     # Initialize configuration
     config = Configuration()
 
@@ -61,7 +61,7 @@ def run_model_with_strategy(dataset, model_name):
         return
 
     # Use ModelContext for training and evaluation
-    context = ModelContext(strategy)
+    context = ModelContext(strategy, format_type=result_format)
 
     # Notify observers about progress
     subject.notify_observers("progress", {"progress": 50})
@@ -73,4 +73,4 @@ def run_model_with_strategy(dataset, model_name):
     subject.notify_observers("complete", {"results": classification_report(y_test, y_pred, output_dict=True)})
 
     # Print classification report
-    print(classification_report(y_test, y_pred))
+    context.print_results(y_test, y_pred)

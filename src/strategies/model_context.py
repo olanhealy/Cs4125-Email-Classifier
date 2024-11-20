@@ -1,5 +1,4 @@
 from src.strategies.classification_strategy import ClassificationStrategy
-from src.decorators.caching_decorator import CachingDecorator
 from src.decorators.error_handling_decorator import ErrorHandlingDecorator
 from src.decorators.logging_decorator import LoggingDecorator
 from src.decorators.result_formatting_decorator import ResultFormattingDecorator
@@ -7,11 +6,10 @@ from src.decorators.timing_decorator import TimingDecorator
 
 class ModelContext:
     def __init__(self, strategy: ClassificationStrategy,
-        use_logging=False,
-        use_timing=False,
-        use_caching=False,
-        use_error_handling=False,
-        use_formatting=False,
+        use_logging=True,
+        use_timing=True,
+        use_error_handling=True,
+        use_formatting=True,
         format_type='text'):
 
         # Apply the decorators based on the provided flags
@@ -19,8 +17,6 @@ class ModelContext:
             strategy = LoggingDecorator(strategy)
         if use_timing:
             strategy = TimingDecorator(strategy)
-        if use_caching:
-            strategy = CachingDecorator(strategy)
         if use_error_handling:
             strategy = ErrorHandlingDecorator(strategy)
         if use_formatting:
