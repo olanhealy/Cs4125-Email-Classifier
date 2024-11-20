@@ -1,3 +1,8 @@
+import os
+import json
+from tabulate import tabulate  # Ensure this is imported for table formatting
+
+# Other imports remain the same
 from src.preprocessing.preprocessor import preprocess_data_with_splits
 from src.utils.config import Configuration
 from src.utils.observer import Subject
@@ -27,9 +32,8 @@ def helper(dataset, model_name, result_format):
 
     # Load and preprocess data
     input_csv = f"data/{dataset}"
-    output_csv = f"data/preprocessed_{dataset}"
     df = pd.read_csv(input_csv)
-    train_data, test_data = preprocess_data_with_splits(df, output_csv)
+    train_data, test_data = preprocess_data_with_splits(df)
 
     # Vectorise data
     max_features = config.get("preprocessing.max_features", 2000)
@@ -70,7 +74,35 @@ def helper(dataset, model_name, result_format):
 
     # Predict and evaluate
     y_pred = context.predict(X_test_vectorized)
-    subject.notify_observers("complete", {"results": classification_report(y_test, y_pred, output_dict=True)})
+    classification_data = classification_report(y_test, y_pred, output_dict=True)
+    subject.notify_observers("complete", {"results": classification_data})
+
+    # Save results to `results` directory
+    results_dir = "results"
+    os.makedirs(results_dir, exist_ok=True)
+
+    file_name = os.path.join(results_dir, f"classification_{model_name}.{result_format}")
+    if result_format == "json":
+        with open(file_name, "w") as file:
+            json.dump(classification_data, file, indent=4)
+    elif result_format == "text":
+        with open(file_name, "w") as file:
+            file.write(classification_report(y_test, y_pred))
+    elif result_format == "table":
+        # Format the classification report as a table
+        table_data = [
+            [label] + list(metrics.values())
+            for label, metrics in classification_data.items()
+            if isinstance(metrics, dict)
+        ]
+        headers = ["Class", "Precision", "Recall", "F1-Score", "Support"]
+
+        # Convert to tabular format
+        table_output = tabulate(table_data, headers=headers, tablefmt="grid")
+
+        # Save table to .txt file
+        with open(file_name, "w") as file:
+            file.write(table_output)
 
     # Print classification report
     context.print_results(y_test, y_pred)
