@@ -13,11 +13,11 @@ from src.strategies.svm_strategy import SVMStrategy
 from src.strategies.xgboost_strategy import XGBoostStrategy
 from src.strategies.model_context import ModelContext
 
-def run_model_with_strategy(dataset, model_name, result_format):
-    # Initialize configuration
+def helper(dataset, model_name, result_format):
+    # Initialise configuration
     config = Configuration()
 
-    # Initialize subject and logger
+    # Initialise subject and logger
     subject = Subject()
     logger = Logger()
     subject.add_observer(logger)
@@ -31,7 +31,7 @@ def run_model_with_strategy(dataset, model_name, result_format):
     df = pd.read_csv(input_csv)
     train_data, test_data = preprocess_data_with_splits(df, output_csv)
 
-    # Vectorize data
+    # Vectorise data
     max_features = config.get("preprocessing.max_features", 2000)
     stop_words = config.get("preprocessing.stop_words", "english")
     tfidf_vectorizer = TfidfVectorizer(max_features=max_features, stop_words=stop_words)

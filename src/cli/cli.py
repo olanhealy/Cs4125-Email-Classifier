@@ -1,12 +1,12 @@
 import os
 import sys
+from src.cli.helper import helper
 
-# Add the project root directory to sys.path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-from src.cli.model import run_model_with_strategy
+
 
 def list_files_and_models():
     # List available datasets
@@ -73,7 +73,7 @@ def main():
             # Check if valid selections were made
             if dataset and model_name and result_format:
                 print(f"\nRunning with CSV: {dataset}, Model: {model_name}, Format: {result_format}")
-                run_model_with_strategy(dataset, model_name, result_format)
+                helper(dataset, model_name, result_format)
             else:
                 print("Invalid input. Returning to menu.")
 
@@ -86,4 +86,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+   main()
+
