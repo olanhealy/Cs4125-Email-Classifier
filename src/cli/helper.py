@@ -1,8 +1,9 @@
 import os
 import json
-from tabulate import tabulate  # Ensure this is imported for table formatting
+from tabulate import tabulate  
+import warnings
+from sklearn.exceptions import UndefinedMetricWarning
 
-# Other imports remain the same
 from src.preprocessing.preprocessor import preprocess_data_with_splits
 from src.utils.config import Configuration
 from src.utils.observer import Subject
@@ -18,6 +19,7 @@ from src.strategies.svm_strategy import SVMStrategy
 from src.strategies.logistic_regression_strategy import LogisticRegressionStrategy
 from src.strategies.model_context import ModelContext
 
+warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 def helper(dataset, model_name, result_format):
     # Initialise configuration
     config = Configuration()
