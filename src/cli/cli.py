@@ -1,6 +1,21 @@
 import os
 import sys
+"""
 
+This script serves as the entry point for our Email Classifier application. It provides a command-line interface
+for users to select a dataset, a machine learning model, and an output format. 
+
+Key functionalities:
+1. Lists available datasets, models, and result formats.
+2. Collects user input to specify their preferences.
+3. Calls the `helper` function to execute the classification workflow.
+4. Outputs the results in the chosen format and displays relevant metrics.
+
+Run this script to start the application and follow the on-screen instructions.
+
+Usage:
+    python src/cli/main.py
+"""
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)

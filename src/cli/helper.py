@@ -19,6 +19,31 @@ from src.strategies.svm_strategy import SVMStrategy
 from src.strategies.logistic_regression_strategy import LogisticRegressionStrategy
 from src.strategies.model_context import ModelContext
 
+"""
+
+This script handles the core workflow of the Email Classifier application, including:
+1. Loading and preprocessing the dataset.
+2. Configuring and initialising the chosen machine learning model via the Factory Pattern.
+3. Applying the Strategy Pattern to encapsulate model-specific behavior.
+4. Training the model, making predictions, and evaluating results.
+5. Logging progress and saving results in the specified format (text, JSON, or table).
+
+The script uses pur design patterns:
+- Factory Pattern: Dynamically creates model instances.
+- Strategy Pattern: Encapsulates different classification strategies.
+- Observer Pattern: Logs progress and completion using a subject-observer relationship.
+
+The `helper` function is called from the CLI and performs all operations seamlessly.
+
+Inputs:
+    - Dataset file (CSV)
+    - Selected model name
+    - Result format
+
+Outputs:
+    - Processed results saved in the `results/` directory.
+"""
+
 warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 def helper(dataset, model_name, result_format):
     # Initialise configuration

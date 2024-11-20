@@ -2,6 +2,10 @@ from sklearn.metrics import classification_report
 from src.strategies.classification_strategy import ClassificationStrategy
 
 class LogisticRegressionStrategy(ClassificationStrategy):
+    """
+    Concrete strategy for using the Logistic Regression model.
+    Encapsulates the training, prediction, and result evaluation for Logistic Regression.
+    """
     def __init__(self, model):
         super().__init__(model)
 
