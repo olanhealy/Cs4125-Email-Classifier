@@ -2,6 +2,10 @@ from sklearn.metrics import classification_report
 from src.strategies.classification_strategy import ClassificationStrategy
 
 class SVMStrategy(ClassificationStrategy):
+    """
+    Concrete strategy for using the Support Vector Machine (SVM) model.
+    Encapsulates the training, prediction, and result evaluation for SVM.
+    """
     def __init__(self, model):
         super().__init__(model)
 

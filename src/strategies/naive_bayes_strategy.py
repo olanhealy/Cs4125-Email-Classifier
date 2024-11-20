@@ -2,6 +2,10 @@ from sklearn.metrics import classification_report
 from src.strategies.classification_strategy import ClassificationStrategy
 
 class NaiveBayesStrategy(ClassificationStrategy):
+    """
+    Concrete strategy for using the Naive Bayes model.
+    Encapsulates the training, prediction, and result evaluation for Naive Bayes.
+    """
     def __init__(self, model):
         super().__init__(model)
 

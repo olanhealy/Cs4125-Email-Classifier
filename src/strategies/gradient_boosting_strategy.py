@@ -2,6 +2,10 @@ from sklearn.metrics import classification_report
 from src.strategies.classification_strategy import ClassificationStrategy
 
 class GradientBoostingStrategy(ClassificationStrategy):
+    """
+    Concrete strategy for using the Gradient Boosting Classifier.
+    Encapsulates the training, prediction, and result evaluation for Gradient Boosting.
+    """
     def __init__(self, model):
         super().__init__(model)
 
