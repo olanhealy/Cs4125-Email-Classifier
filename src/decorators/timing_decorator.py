@@ -24,7 +24,7 @@ class TimingDecorator(ClassifierDecorator):
         result = super().train(X_train, y_train)
         end_time = time.time()
         elapsed_time = end_time - start_time
-        print(f"Training took {elapsed_time:.4f} seconds")
+        print(f"[TIME] Training took {elapsed_time:.4f} seconds")
         return result
 
     def predict(self, X_test) -> int:
@@ -37,7 +37,7 @@ class TimingDecorator(ClassifierDecorator):
         predictions = super().predict(X_test)
         end_time = time.time()
         elapsed_time = end_time - start_time
-        print(f"Prediction took {elapsed_time:.4f} seconds")
+        print(f"[TIME]Prediction took {elapsed_time:.4f} seconds")
         return predictions
 
     def print_results(self, y_test, predictions):
@@ -48,4 +48,4 @@ class TimingDecorator(ClassifierDecorator):
         super().print_results(y_test, predictions)
         end_time = time.time()
         elapsed_time = end_time - start_time
-        print(f"Printing results took {elapsed_time:.4f} seconds.")
+        print(f"[TIME] Printing results took {elapsed_time:.4f} seconds.")
