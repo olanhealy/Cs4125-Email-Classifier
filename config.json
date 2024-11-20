@@ -1,16 +1,28 @@
 {
     "model_params": {
-        "naive_bayes": {"alpha": 1.0},
-        "svm": {"C": 1.0, "kernel": "linear", "random_state": 0},
-        "gradient_boosting": {"n_estimators": 100, "learning_rate": 0.1, "random_state": 0},
-        "xgboost": {
+        "naive_bayes": {
+            "alpha": 1.0
+        },
+        "svm": {
+            "C": 1.0,
+            "kernel": "linear",
+            "random_state": 0
+        },
+        "gradient_boosting": {
             "n_estimators": 100,
             "learning_rate": 0.1,
-            "random_state": 0,
-            "use_label_encoder": false,
-            "eval_metric": "mlogloss"
+            "random_state": 0
         },
-        "extra_trees": {"n_estimators": 1000, "random_state": 0, "class_weight": "balanced"}
+        "logistic_regression": {
+            "penalty": "l2",
+            "C": 1.0,
+            "random_state": 0
+        },
+        "extra_trees": {
+            "n_estimators": 1000,
+            "random_state": 0,
+            "class_weight": "balanced"
+        }
     },
     "preprocessing": {
         "max_features": 2000,

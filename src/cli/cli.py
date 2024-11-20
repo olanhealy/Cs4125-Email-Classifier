@@ -1,13 +1,11 @@
 import os
 import sys
 
-
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from src.cli.helper import helper
-
 
 def list_files_and_models():
     # List available datasets
@@ -16,7 +14,7 @@ def list_files_and_models():
         "Purchasing.csv"
     ]
 
-    while True:  # Loop until a valid choice is made
+    while True:
         print("\nAvailable CSV files:")
         for i, dataset in enumerate(datasets, 1):
             print(f"{i}: {dataset}")
@@ -37,10 +35,10 @@ def list_files_and_models():
         "gradient_boosting",
         "naive_bayes",
         "svm",
-        "xg_boost"
+        "logistic_regression"
     ]
 
-    while True:  # Loop until a valid choice is made
+    while True:
         print("\nAvailable models:")
         for i, model in enumerate(models, 1):
             print(f"{i}: {model}")
@@ -57,7 +55,7 @@ def list_files_and_models():
 
     formats = ["text", "json", "table"]
 
-    while True:  # Loop until a valid choice is made
+    while True:
         print("\nAvailable result formats:")
         for i, fmt in enumerate(formats, 1):
             print(f"{i}: {fmt}")
@@ -86,7 +84,6 @@ def main():
         if choice == "1":
             dataset, model_name, result_format = list_files_and_models()
 
-            # Check if valid selections were made
             if dataset and model_name and result_format:
                 print(f"\nRunning with CSV: {dataset}, Model: {model_name}, Format: {result_format}")
                 helper(dataset, model_name, result_format)
@@ -103,4 +100,3 @@ def main():
 
 if __name__ == "__main__":
    main()
-

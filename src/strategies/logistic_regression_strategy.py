@@ -1,7 +1,7 @@
 from sklearn.metrics import classification_report
 from src.strategies.classification_strategy import ClassificationStrategy
 
-class XGBoostStrategy(ClassificationStrategy):
+class LogisticRegressionStrategy(ClassificationStrategy):
     def __init__(self, model):
         super().__init__(model)
 

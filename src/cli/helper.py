@@ -15,7 +15,7 @@ from src.strategies.extra_trees_strategy import ExtraTreesStrategy
 from src.strategies.gradient_boosting_strategy import GradientBoostingStrategy
 from src.strategies.naive_bayes_strategy import NaiveBayesStrategy
 from src.strategies.svm_strategy import SVMStrategy
-from src.strategies.xgboost_strategy import XGBoostStrategy
+from src.strategies.logistic_regression_strategy import LogisticRegressionStrategy
 from src.strategies.model_context import ModelContext
 
 def helper(dataset, model_name, result_format):
@@ -57,9 +57,9 @@ def helper(dataset, model_name, result_format):
     elif model_name == "svm":
         model_instance = ClassifierFactory.create_svm_model()
         strategy = SVMStrategy(model_instance.model)
-    elif model_name == "xg_boost":
-        model_instance = ClassifierFactory.create_xgboost_model()
-        strategy = XGBoostStrategy(model_instance.model)
+    elif model_name == "logistic_regression":
+        model_instance = ClassifierFactory.create_logistic_regression_model()
+        strategy = LogisticRegressionStrategy(model_instance.model)
     else:
         print(f"Invalid model name: {model_name}")
         return

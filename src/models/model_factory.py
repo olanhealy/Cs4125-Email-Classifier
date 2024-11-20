@@ -1,6 +1,6 @@
 from src.models.gradient_boosting import GradientBoostingModel
 from src.models.naive_bayes import NaiveBayesModel
-from src.models.xg_boost import XGBoostModel
+from src.models.logistic_regression import LogisticRegressionModel
 from src.models.svm import SVMModel
 from src.models.extra_trees import ExtraTreesModel
 from src.utils.config import Configuration
@@ -38,14 +38,13 @@ class ClassifierFactory:
         return cls.create_model(GradientBoostingModel, n_estimators=n_estimators, learning_rate=learning_rate, random_state=random_state)
 
     @classmethod
-    def create_xgboost_model(cls):
+    def create_logistic_regression_model(cls):
         config = Configuration()
-        n_estimators = config.get("model_params.xgboost.n_estimators", 100)
-        learning_rate = config.get("model_params.xgboost.learning_rate", 0.1)
-        random_state = config.get("model_params.xgboost.random_state", 0)
-        use_label_encoder = config.get("model_params.xgboost.use_label_encoder", False)
-        eval_metric = config.get("model_params.xgboost.eval_metric", 'mlogloss')
-        return cls.create_model(XGBoostModel, n_estimators=n_estimators, learning_rate=learning_rate, random_state=random_state, use_label_encoder=use_label_encoder, eval_metric=eval_metric)
+        penalty = config.get("model_params.logistic_regression.penalty", "l2")
+        C = config.get("model_params.logistic_regression.C", 1.0)
+        random_state = config.get("model_params.logistic_regression.random_state", 0)
+        return cls.create_model(LogisticRegressionModel, penalty=penalty, C=C, random_state=random_state)
+
 
     @classmethod
     def create_extra_trees_model(cls):
