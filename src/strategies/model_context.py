@@ -16,9 +16,6 @@ class ModelContext:
         use_formatting=True,
         format_type='text'):
 
-        # Apply the decorators based on the provided flags
-        if use_formatting:
-            strategy = ResultFormattingDecorator(strategy, format_type=format_type)
         """
         Initialise the context with a chosen strategy and optional decorators.
 
@@ -30,7 +27,9 @@ class ModelContext:
         :param format_type: Desired format for results (e.g., text, JSON, table).
         """
 
-
+        # Apply the decorators based on the provided flags
+        if use_formatting:
+            strategy = ResultFormattingDecorator(strategy, format_type=format_type)
         if use_logging:
             strategy = LoggingDecorator(strategy)
         if use_timing:
