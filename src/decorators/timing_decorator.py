@@ -48,4 +48,4 @@ class TimingDecorator(ClassifierDecorator):
         super().print_results(y_test, predictions)
         end_time = time.time()
         elapsed_time = end_time - start_time
-        print(f"[TIME] Printing results took {elapsed_time:.4f} seconds.")
+        print(f"\n[TIME] Printing results took {elapsed_time:.4f} seconds.")
