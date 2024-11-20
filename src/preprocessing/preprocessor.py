@@ -5,7 +5,7 @@ from .translator import translate_to_english, report_translation_rate
 
 from sklearn.model_selection import train_test_split
 
-def preprocess_data_with_splits(df, output_filename, test_size=0.2, random_state=42):
+def preprocess_data_with_splits(df, save_output=False, output_filename=None, test_size=0.2, random_state=42):
     """
     Preprocess the dataset, clean and translate text, create hierarchical labels,
     and split the data into training and testing DataFrames.
@@ -27,9 +27,10 @@ def preprocess_data_with_splits(df, output_filename, test_size=0.2, random_state
         lambda x: ' > '.join(x), axis=1
     )
 
-    # Save preprocessed data
-    df_selected.to_csv(output_filename, index=False)
-    print(f"Data cleaning and output completed for {output_filename}")
+    # Save preprocessed data to a file if required
+    if save_output and output_filename:
+        df_selected.to_csv(output_filename, index=False)
+        print(f"Data cleaning and output completed for {output_filename}")
 
     # Split into training and testing sets
     X = df_selected['Interaction content']
