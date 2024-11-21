@@ -3,12 +3,18 @@ from sklearn.model_selection import train_test_split
 from .text_cleaner import clean_text
 from .translator import translate_to_english, report_translation_rate
 
-from sklearn.model_selection import train_test_split
-
 def preprocess_data_with_splits(df, save_output=False, output_filename=None, test_size=0.2, random_state=42):
     """
     Preprocess the dataset, clean and translate text, create hierarchical labels,
     and split the data into training and testing DataFrames.
+
+    :param df: The input DataFrame containing the dataset.
+    :param save_output: Flag to save the processed data to a CSV file.
+    :param output_filename: Name of the output file if save_output is True.
+    :param test_size: Proportion of the dataset to include in the test split.
+    :param random_state: Random seed for reproducibility.
+
+    :return: Two DataFrames - train_data and test_data with cleaned and labeled data.
     """
     selected_columns = ['Ticket id', 'Interaction id', 'Ticket Summary', 
                         'Interaction content', 'Type 1', 'Type 2', 'Type 3', 'Type 4']
@@ -22,7 +28,7 @@ def preprocess_data_with_splits(df, save_output=False, output_filename=None, tes
     # Fill missing values
     df_selected.fillna('Unknown', inplace=True)
 
-    # Create hierarchical label
+    # Create hierarchical label combining multiple type columns
     df_selected['hierarchical_label'] = df_selected[['Type 1', 'Type 2', 'Type 3', 'Type 4']].apply(
         lambda x: ' > '.join(x), axis=1
     )
@@ -42,4 +48,3 @@ def preprocess_data_with_splits(df, save_output=False, output_filename=None, tes
     test_data = pd.DataFrame({'Interaction content': X_test, 'label': y_test})
 
     return train_data, test_data
-
