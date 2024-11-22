@@ -45,6 +45,31 @@ Outputs:
 """
 
 warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
+warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
+
+import os
+import json
+from tabulate import tabulate
+import warnings
+from sklearn.exceptions import UndefinedMetricWarning
+
+from src.preprocessing.preprocessor import preprocess_data_with_splits
+from src.utils.config import Configuration
+from src.utils.observer import Subject
+from src.utils.logger import Logger
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics import classification_report
+import pandas as pd
+from src.models.model_factory import ClassifierFactory
+from src.strategies.extra_trees_strategy import ExtraTreesStrategy
+from src.strategies.gradient_boosting_strategy import GradientBoostingStrategy
+from src.strategies.naive_bayes_strategy import NaiveBayesStrategy
+from src.strategies.svm_strategy import SVMStrategy
+from src.strategies.logistic_regression_strategy import LogisticRegressionStrategy
+from src.strategies.model_context import ModelContext
+
+warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
+
 def helper(dataset, model_name, result_format):
     # Initialise configuration
     config = Configuration()
@@ -57,12 +82,16 @@ def helper(dataset, model_name, result_format):
     # Notify observers about the process start
     subject.notify_observers("start", {"model": model_name, "csv": dataset})
 
-    # Load and preprocess data
+    # Step 1: Load dataset
     input_csv = f"data/{dataset}"
     df = pd.read_csv(input_csv)
-    train_data, test_data = preprocess_data_with_splits(df)
+    subject.notify_observers("progress", {"progress": 10, "message": "Dataset loaded successfully."})
 
-    # Vectorise data
+    # Step 2: Preprocess data
+    train_data, test_data = preprocess_data_with_splits(df)
+    subject.notify_observers("progress", {"progress": 25, "message": "Data preprocessed and split into training and testing sets."})
+
+    # Step 3: Vectorise data
     max_features = config.get("preprocessing.max_features", 2000)
     stop_words = config.get("preprocessing.stop_words", "english")
     tfidf_vectorizer = TfidfVectorizer(max_features=max_features, stop_words=stop_words)
@@ -70,8 +99,9 @@ def helper(dataset, model_name, result_format):
     X_test_vectorized = tfidf_vectorizer.transform(test_data['Interaction content']).toarray()
     y_train = train_data['label']
     y_test = test_data['label']
+    subject.notify_observers("progress", {"progress": 40, "message": "Data vectorized using TF-IDF."})
 
-    # Use Factory to create model
+    # Step 4: Use Factory to create model
     if model_name == "extra_trees":
         model_instance = ClassifierFactory.create_extra_trees_model()
         strategy = ExtraTreesStrategy(model_instance.model)
@@ -88,23 +118,21 @@ def helper(dataset, model_name, result_format):
         model_instance = ClassifierFactory.create_logistic_regression_model()
         strategy = LogisticRegressionStrategy(model_instance.model)
     else:
-        print(f"Invalid model name: {model_name}")
+        subject.notify_observers("error", {"message": f"Invalid model name: {model_name}"})
         return
+    subject.notify_observers("progress", {"progress": 50, "message": f"Model '{model_name}' created using the Factory Pattern."})
 
-    # Use ModelContext for training and evaluation
+    # Step 5: Use ModelContext for training
     context = ModelContext(strategy, format_type=result_format)
-
-    # Notify observers about progress
-    subject.notify_observers("progress", {"progress": 50})
     context.train(X_train_vectorized, y_train)
-    subject.notify_observers("progress", {"progress": 75})
+    subject.notify_observers("progress", {"progress": 65, "message": "Model training completed."})
 
-    # Predict and evaluate
+    # Step 6: Predict and evaluate
     y_pred = context.predict(X_test_vectorized)
     classification_data = classification_report(y_test, y_pred, output_dict=True)
-    subject.notify_observers("complete", {"results": classification_data})
+    subject.notify_observers("progress", {"progress": 80, "message": "Model predictions completed."})
 
-    # Save results to `results` directory
+    # Step 7: Save results to `results` directory
     results_dir = "results"
     os.makedirs(results_dir, exist_ok=True)
 
@@ -130,6 +158,14 @@ def helper(dataset, model_name, result_format):
         # Save table to .txt file
         with open(file_name, "w") as file:
             file.write(table_output)
+    subject.notify_observers("progress", {"progress": 90, "message": f"Results saved in '{file_name}'."})
 
-    # Print classification report
+    # Step 8: Print classification report
     context.print_results(y_test, y_pred)
+    subject.notify_observers("complete", {
+        "progress": 100,
+        "message": "Process completed successfully.",
+        "results": classification_data  # Include results in the notification
+    })
+
+
