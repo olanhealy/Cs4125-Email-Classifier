@@ -165,7 +165,6 @@ def helper(dataset, model_name, result_format):
     subject.notify_observers("complete", {
         "progress": 100,
         "message": "Process completed successfully.",
-        "results": classification_data  # Include results in the notification
     })
 
 

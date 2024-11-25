@@ -7,11 +7,20 @@ class Logger(Observer):
 
     def update(self, event_type: str, data: dict):
         if event_type == "start":
-            self.logs.append(f"Process started with model: {data['model']} and CSV: {data['csv']}")
+            message = f"Process started with model: {data['model']} and CSV: {data['csv']}"
         elif event_type == "progress":
-            self.logs.append(f"Progress: {data['progress']}%")
+            message = f"Progress: {data['progress']}% - {data.get('message', 'Action in progress')}"
         elif event_type == "complete":
-            self.logs.append(f"Process completed. Results: {data['results']}")
+            message = f"Process completed: {data['message']}"
+        else:
+            message = f"Unknown event type: {event_type}"
+
+        # Log and print the message
+        self.logs.append(message)
+        print(f"[LOGGER] {message}")
+
+        # If complete, print the summary of all events
+        if event_type == "complete":
             self.print_logs()
 
     def print_logs(self):
